@@ -1,5 +1,7 @@
 # AVALANCHE AI PROMPT LIBRARY
+
 # Copy-paste prompts for 10x productivity with Claude Code, Cursor, and Windsurf
+
 # Each prompt is designed to be self-contained and produce production-ready output
 
 ---
@@ -7,6 +9,7 @@
 ## 🏗️ SCAFFOLDING PROMPTS
 
 ### New ERC-20 Token Project
+
 ```
 Scaffold a complete Foundry project for an Avalanche C-Chain ERC-20 token with:
 - Token name: [NAME], symbol: [SYMBOL], max supply: [AMOUNT]
@@ -23,6 +26,7 @@ Use OpenZeppelin v5. Do not stub — implement fully.
 ```
 
 ### New NFT Collection
+
 ```
 Build a production Avalanche NFT collection with Foundry:
 - ERC-721 with ERC2981 royalties (5%), max supply [N], mint price [X] AVAX
@@ -38,6 +42,7 @@ Solidity 0.8.24. OpenZeppelin v5. No stubs.
 ```
 
 ### New DeFi Protocol
+
 ```
 Build a simple ERC-20 staking contract on Avalanche:
 - Stake any ERC-20, earn rewards in a separate reward token
@@ -52,6 +57,7 @@ Use OpenZeppelin v5 Pausable, ReentrancyGuard, SafeERC20. Solidity 0.8.24.
 ```
 
 ### Cross-Chain Application (ICM)
+
 ```
 Build a cross-chain message passing system for Avalanche using ICM/Teleporter:
 - Source chain: Fuji C-Chain (Chain ID 43113)
@@ -73,6 +79,7 @@ Use: forge install ava-labs/teleporter
 ## 🔒 SECURITY PROMPTS
 
 ### Full Security Audit
+
 ```
 Perform a complete security audit on this Avalanche smart contract codebase.
 
@@ -103,6 +110,7 @@ Then write a Slither config (.slither.config.json) to filter false positives fro
 ```
 
 ### Slither Triage
+
 ```
 I ran `slither . --print human-summary` and got this output:
 [PASTE SLITHER OUTPUT HERE]
@@ -117,6 +125,7 @@ Then: are there any Avalanche-specific security issues Slither wouldn't catch?
 ```
 
 ### Fuzz Test Generation
+
 ```
 Generate comprehensive fuzz tests for this contract: [PASTE CONTRACT]
 
@@ -139,6 +148,7 @@ Tests must compile with Foundry (forge-std/Test.sol), evmVersion cancun.
 ## 🚀 DEPLOYMENT PROMPTS
 
 ### Pre-Deploy Checklist
+
 ```
 Run the complete pre-deployment checklist for this Avalanche project:
 
@@ -157,6 +167,7 @@ Do not proceed to next step until all are passing.
 ```
 
 ### Gas Optimization
+
 ```
 Read .gas-snapshot and analyze the gas costs for this Avalanche contract.
 
@@ -179,6 +190,7 @@ After changes: run forge snapshot again and show the delta.
 ## 🔧 DEBUGGING PROMPTS
 
 ### Transaction Failed
+
 ```
 This transaction failed on Avalanche [Fuji/Mainnet]:
 - TX hash: [HASH]
@@ -195,6 +207,7 @@ This transaction failed on Avalanche [Fuji/Mainnet]:
 ```
 
 ### Slither False Positive
+
 ```
 Slither is flagging this as a vulnerability but I believe it's a false positive:
 [PASTE FINDING]
@@ -208,6 +221,7 @@ Contract code: [PASTE RELEVANT CODE]
 ```
 
 ### ICM Message Not Delivered
+
 ```
 My ICM cross-chain message isn't being delivered on Avalanche.
 
@@ -230,6 +244,7 @@ Receiver contract: [ADDR]
 ## 🌐 FRONTEND / SDK PROMPTS
 
 ### Wallet Integration
+
 ```
 Write a React hook for connecting to Avalanche C-Chain and my custom L1:
 
@@ -245,6 +260,7 @@ Requirements:
 ```
 
 ### ChainKit Event Listener
+
 ```
 Write a Node.js TypeScript service using @avalanche-sdk/chainkit that:
 
@@ -263,6 +279,7 @@ Use: AVACLOUD_API_KEY from process.env
 ## ⚡ QUICK ONE-LINER PROMPTS
 
 ### Explain This Contract
+
 ```
 Explain what this Avalanche smart contract does, line by line.
 Identify: what it stores, who can call what, what events it emits,
@@ -270,6 +287,7 @@ and any security concerns. [PASTE CONTRACT]
 ```
 
 ### Convert Hardhat → Foundry
+
 ```
 Convert this Hardhat project to Foundry for Avalanche:
 - foundry.toml with evm_version="cancun" 
@@ -280,6 +298,7 @@ Convert this Hardhat project to Foundry for Avalanche:
 ```
 
 ### Upgrade Pattern
+
 ```
 Convert this non-upgradeable Avalanche contract to use UUPS proxy pattern:
 - Use OpenZeppelin UUPSUpgradeable + Initializable

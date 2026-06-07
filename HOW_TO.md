@@ -16,6 +16,7 @@ Yes — I can read and understand everything in your **AVAX QuickStart** folder.
 **1. Start or open a Foundry project**
 
 Either:
+
 - Clone the [Avalanche Starter Kit](https://github.com/ava-labs/avalanche-starter-kit), or  
 - Run `forge init` for a new project.
 
@@ -54,6 +55,7 @@ Avalanche supports **Cancun**, not Solidity’s default **Pectra** (≥0.8.30). 
 ## What I can do from here
 
 In **Ask mode** (current), I can:
+
 - Explain any file in detail
 - Help you plan a project (token, NFT, cross-chain, etc.)
 - Walk through setup step by step
