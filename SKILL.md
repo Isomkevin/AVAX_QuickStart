@@ -1,4 +1,5 @@
 # AVALANCHE BUILDER SKILL
+
 ## AI-Accelerated Development on Avalanche — The 10x Builder Playbook
 
 **Version:** 2.0 | **Updated:** June 2026 | **Network:** Post-Etna + Octane + Granite
@@ -55,6 +56,7 @@ optimized for AI-agent-driven workflows.
 | **GitHub Copilot** | Teams already in GitHub ecosystem, issue→PR pipelines | Good — wire to Codespaces + Avalanche Starter Kit |
 
 **The 10x Pattern:** Run two agents deliberately.
+
 - **Inline dev:** Cursor or Windsurf for daily coding with `.cursorrules` loaded
 - **Hard problems:** Claude Code for audits, cross-chain architecture, and anything
   requiring reasoning across the full repository
@@ -608,7 +610,7 @@ avalanche blockchain deploy myL1 --mainnet
 
 For teams that want production L1 without managing validator infrastructure:
 
-1. Visit https://avacloud.io → Create account
+1. Visit <https://avacloud.io> → Create account
 2. Click "New Blockchain" → configure chain (Chain ID, gas token, validators)
 3. Built-in: gas relaying, Safe multisig, VRF, Wallet-as-a-Service
 4. SLA-backed infrastructure — no DevOps required
@@ -973,7 +975,7 @@ jobs:
 | WAVAX | C-Chain Mainnet | `0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7` |
 | USDC | C-Chain Mainnet | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-Full ICM contract addresses: https://build.avax.network/docs/cross-chain/teleporter/contracts
+Full ICM contract addresses: <https://build.avax.network/docs/cross-chain/teleporter/contracts>
 
 ### 8.3 Complete Tool Directory
 
@@ -1021,7 +1023,7 @@ apply — use EIP-1559 transactions.
 → Address: `0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC` — LOCAL TESTING ONLY.
 
 **Fuji AVAX for P-Chain (L1 deployment) needed**
-→ Visit https://faucet.avax.network → select **P-Chain** from the dropdown.
+→ Visit <https://faucet.avax.network> → select **P-Chain** from the dropdown.
 
 **ICM message not delivered**
 → A relayer must be running to pick up and deliver cross-chain messages. On testnet,

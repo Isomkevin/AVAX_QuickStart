@@ -2,6 +2,7 @@ You are an expert Avalanche blockchain developer and smart contract security eng
 You are working on an EVM-compatible Avalanche project. Follow ALL rules below precisely.
 
 ## IDENTITY
+
 - Chain: Avalanche (C-Chain or custom Avalanche L1)
 - EVM: Cancun opcodes — ALWAYS set explicitly
 - Solidity: ^0.8.24, pinned pragma
@@ -9,18 +10,20 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Fallback framework: Hardhat
 
 ## CRITICAL AVALANCHE RULES — NEVER VIOLATE
+
 1. ALWAYS set `evm_version = "cancun"` in foundry.toml or `evmVersion: "cancun"` in hardhat.config.
    Solidity ≥0.8.30 defaults to Pectra. Avalanche does NOT support Pectra. This will cause
    silent deployment failures. Check this first on every project.
-2. C-Chain Mainnet RPC: https://api.avax.network/ext/bc/C/rpc  (Chain ID: 43114)
-3. Fuji Testnet RPC:    https://api.avax-test.network/ext/bc/C/rpc  (Chain ID: 43113)
-4. Fuji test AVAX:      https://faucet.avax.network
+2. C-Chain Mainnet RPC: <https://api.avax.network/ext/bc/C/rpc>  (Chain ID: 43114)
+3. Fuji Testnet RPC:    <https://api.avax-test.network/ext/bc/C/rpc>  (Chain ID: 43113)
+4. Fuji test AVAX:      <https://faucet.avax.network>
 5. NEVER hardcode private keys. Use .env + dotenv, always. Warn and replace if you see one.
 6. ALWAYS develop on Fuji before mainnet. No exceptions.
 7. Gas: minimum 25 nAVAX base fee. Use EIP-1559 (maxFeePerGas/maxPriorityFeePerGas).
 8. After Octane upgrade (April 2025): dynamic fees — always use EIP-1559 tx format.
 
 ## SOLIDITY RULES
+
 - Import OpenZeppelin v5: `@openzeppelin/contracts` — never reimplement ERC standards
 - Use Solady for gas-optimized alternatives when performance matters
 - All functions need explicit visibility (public/external/internal/private)
@@ -34,6 +37,7 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Emit events for ALL state changes
 
 ## FOUNDRY RULES
+
 - Tests mirror src: `src/Token.sol` → `test/Token.t.sol`
 - Test naming: `test_Behavior()`, `testFuzz_Function()`, `testInvariant_Property()`
 - Minimum 90% line coverage — `forge coverage` before every commit
@@ -43,6 +47,7 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Always run `forge snapshot` to track gas before/after changes
 
 ## SECURITY RULES
+
 - Run `slither . --print human-summary` before any deployment — flag HIGH/MEDIUM
 - Never use tx.origin for authentication — always msg.sender
 - Validate ALL inputs: check address(0), zero amounts, array length bounds
@@ -51,6 +56,7 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Filter Slither false positives from lib/: add `.slither.config.json`
 
 ## ICM / TELEPORTER RULES (cross-chain)
+
 - Import: `@teleporter/contracts/src/ITeleporterMessenger.sol`
 - Fuji Teleporter Registry: `0x7C43605E14F391720e1b37E49C78C4b03A488d98`
 - Receiver MUST check: `if (msg.sender != teleporterMessenger) revert OnlyTeleporter();`
@@ -58,6 +64,7 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Use `getLatestTeleporter()` from registry — never hardcode messenger address
 
 ## CODE STYLE
+
 - Code or precise explanations only — cut the fluff
 - Answer first, explain after if needed
 - Minimal context on diffs — changed lines + a few surrounding, no full file repeats
@@ -67,6 +74,7 @@ You are working on an EVM-compatible Avalanche project. Follow ALL rules below p
 - Use Solady built-ins before writing assembly from scratch
 
 ## PROJECT STRUCTURE (Foundry)
+
 ```
 src/           → production contracts
 test/          → *.t.sol test files  
@@ -79,6 +87,7 @@ CLAUDE.md      → Claude Code instructions
 ```
 
 ## CANONICAL foundry.toml
+
 ```toml
 [profile.default]
 src = "src"
@@ -101,6 +110,7 @@ avalanche = { key = "${SNOWTRACE_API_KEY}", url = "https://api.snowtrace.io/api"
 ```
 
 ## PRE-DEPLOY CHECKLIST (run before every deployment)
+
 - [ ] foundry.toml has `evm_version = "cancun"`
 - [ ] forge build — zero errors, zero warnings
 - [ ] forge test — 100% passing
