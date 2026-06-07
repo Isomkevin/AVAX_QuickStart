@@ -1,0 +1,161 @@
+# .github/workflows/avalanche-ci.yml
+# Complete CI/CD security pipeline for Avalanche projects
+# Drop in .github/workflows/ — runs on every push and PR
+
+name: Avalanche Build & Security Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  FUJI_RPC_URL: https://api.avax-test.network/ext/bc/C/rpc
+  AVAX_RPC_URL: https://api.avax.network/ext/bc/C/rpc
+
+jobs:
+  # ── Job 1: Build & Test ────────────────────────────────────────────────────
+  build-and-test:
+    name: Build, Test & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Verify evm_version is cancun
+        run: |
+          if ! grep -q 'evm_version = "cancun"' foundry.toml; then
+            echo "❌ FATAL: foundry.toml missing evm_version = \"cancun\""
+            echo "Avalanche does not support Pectra (Solidity default ≥0.8.30)"
+            exit 1
+          fi
+          echo "✓ evm_version = cancun confirmed"
+
+      - name: Build
+        run: forge build --sizes
+
+      - name: Run Unit Tests
+        run: forge test -vvv --gas-report
+
+      - name: Run Fuzz Tests (Extended)
+        run: forge test --fuzz-runs 50000 --match-test testFuzz -vvv
+
+      - name: Run Invariant Tests
+        run: forge test --match-test testInvariant -vvv
+
+      - name: Coverage Report
+        run: |
+          forge coverage --report summary 2>&1 | tee coverage-summary.txt
+          cat coverage-summary.txt
+          # Warn if any file is below 90% (adjust threshold as needed)
+          if grep -E "[0-9]+\.[0-9]+%" coverage-summary.txt | awk -F'%' '{if ($1 < 90) exit 1}'; then
+            echo "✓ Coverage thresholds met"
+          else
+            echo "⚠️  Some files below 90% coverage — review coverage-summary.txt"
+          fi
+
+      - name: Gas Snapshot Check
+        run: |
+          forge snapshot --check || echo "⚠️  Gas regression detected — review .gas-snapshot"
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-summary.txt
+
+  # ── Job 2: Security Analysis ───────────────────────────────────────────────
+  security:
+    name: Security Scan (Slither)
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.4.0
+        id: slither
+        with:
+          fail-on: high
+          slither-args: >
+            --print human-summary
+            --filter-paths "lib/"
+            --exclude-dependencies
+        continue-on-error: true
+
+      - name: Slither Results
+        run: |
+          if [ "${{ steps.slither.outcome }}" = "failure" ]; then
+            echo "❌ Slither found HIGH severity issues — review before merging"
+            exit 1
+          fi
+          echo "✓ Slither scan passed"
+
+  # ── Job 3: Secrets Check ───────────────────────────────────────────────────
+  secrets-check:
+    name: Check for Exposed Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan for Private Keys
+        run: |
+          echo "Scanning for exposed private keys..."
+          # Check for hex private keys (64 char hex strings)
+          if grep -rn --include="*.sol" --include="*.ts" --include="*.js" --include="*.json" \
+            -E '0x[0-9a-fA-F]{64}' . \
+            --exclude-dir=".git" --exclude-dir="lib" --exclude-dir="node_modules" \
+            | grep -v ".env" | grep -v "test" | grep -v "example"; then
+            echo "❌ Potential private key found in non-test file!"
+            exit 1
+          fi
+          echo "✓ No exposed private keys detected"
+
+      - name: Check .gitignore includes .env
+        run: |
+          if ! grep -q "^\.env$\|^\.env$" .gitignore 2>/dev/null; then
+            echo "⚠️  .env not found in .gitignore — add it"
+            exit 1
+          fi
+          echo "✓ .gitignore includes .env"
+
+  # ── Job 4: Dry-run Deploy to Fuji (on main branch only) ───────────────────
+  deploy-dry-run:
+    name: Dry-run Deploy (Fuji)
+    runs-on: ubuntu-latest
+    needs: [build-and-test, security]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Dry-run Deploy Script
+        env:
+          PRIVATE_KEY: ${{ secrets.FUJI_DEPLOY_KEY }}
+          FUJI_RPC_URL: ${{ env.FUJI_RPC_URL }}
+        run: |
+          forge script script/Deploy.s.sol \
+            --rpc-url $FUJI_RPC_URL \
+            --private-key $PRIVATE_KEY \
+            -vvvv
+          echo "✓ Dry-run deploy succeeded — ready for --broadcast"
