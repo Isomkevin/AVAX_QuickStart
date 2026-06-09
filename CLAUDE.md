@@ -2,6 +2,19 @@
 # Drop this file at project root. Claude Code reads it as persistent context.
 
 ## Project Type
+**AvaxQuick** — full-stack Avalanche C-Chain dApp: Foundry smart contracts + Next.js frontend.
+
+| Component | Location | Entry point |
+|-----------|----------|-------------|
+| ERC-20 token | `src/AvaxQuick.sol` | `AvaxQuick` (AXQ, 1B max supply) |
+| Tests | `test/AvaxQuick.t.sol` | unit, fuzz, invariant |
+| Deploy | `script/Deploy.s.sol` | mints 10% to deployer |
+| Frontend | `frontend/` | RainbowKit + wagmi on Fuji |
+| Docs | `README.md`, `HOW_TO.md` | setup and deployment guides |
+
+Frontend agent rules: `frontend/AGENTS.md`
+
+## Project Type (chain)
 Avalanche blockchain project — EVM-compatible, Cancun opcodes, Foundry toolchain.
 
 ## The One Rule That Must Never Be Broken
@@ -121,3 +134,30 @@ Full addresses: https://build.avax.network/docs/cross-chain/teleporter/contracts
 6. Is .env in .gitignore?
 
 If any of these are missing, fix them before doing anything else I asked for.
+
+## Frontend Workflow
+
+When editing `frontend/`:
+
+1. Read `frontend/AGENTS.md` first
+2. Contract changes require: `forge build` → `cd frontend && npm run sync-abi`
+3. Env vars: `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`, `NEXT_PUBLIC_AVAX_QUICK_ADDRESS`
+4. Default chain: Avalanche Fuji (43113) — see `frontend/src/config/wagmi.ts`
+5. Never edit `frontend/src/abi/AvaxQuick.ts` manually
+
+```bash
+cd frontend && npm run dev      # local dev server
+cd frontend && npm run build    # production build check
+cd frontend && npm run sync-abi # refresh ABI after forge build
+```
+
+## Documentation Map
+
+| File | When to read |
+|------|--------------|
+| `README.md` | Project overview, quick start, structure |
+| `HOW_TO.md` | Step-by-step Fuji deploy + frontend connect |
+| `SKILL.md` | L1s, ICM/Teleporter, advanced Avalanche patterns |
+| `AI-PROMPT-LIBRARY.md` | Copy-paste prompts for scaffolding and audits |
+| `frontend/README.md` | Frontend stack, env vars, deployment |
+| `frontend/AGENTS.md` | Rules for frontend file edits |

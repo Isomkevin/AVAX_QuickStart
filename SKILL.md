@@ -4,6 +4,21 @@
 
 **Version:** 2.0 | **Updated:** June 2026 | **Network:** Post-Etna + Octane + Granite
 
+### Using this skill in the AvaxQuick repo
+
+This repository is a working implementation of the patterns in this skill:
+
+| What | Where |
+|------|-------|
+| Quick start & project overview | [README.md](./README.md) |
+| Step-by-step Fuji deploy + frontend | [HOW_TO.md](./HOW_TO.md) |
+| Claude Code workflow | [CLAUDE.md](./CLAUDE.md) |
+| Copy-paste AI prompts | [AI-PROMPT-LIBRARY.md](./AI-PROMPT-LIBRARY.md) |
+| Cursor agent rules | [.cursorrules](./.cursorrules) |
+| Next.js dashboard | [frontend/README.md](./frontend/README.md) |
+
+Start with `README.md` for the concrete project; use this `SKILL.md` for advanced Avalanche topics (L1s, ICM, AvaCloud, security deep-dives).
+
 ---
 
 ## SKILL IDENTITY

@@ -1,8 +1,59 @@
 # AVALANCHE AI PROMPT LIBRARY
 
-# Copy-paste prompts for 10x productivity with Claude Code, Cursor, and Windsurf
+Copy-paste prompts for 10x productivity with Claude Code, Cursor, and Windsurf. Each prompt is self-contained and targets production-ready output.
 
-# Each prompt is designed to be self-contained and produce production-ready output
+---
+
+## 📦 THIS PROJECT (AvaxQuick)
+
+Use these when working in the **AVAX_QuickStart** repo specifically.
+
+### Extend the AvaxQuick token
+
+```
+In this AvaxQuick Foundry project, add [FEATURE] to src/AvaxQuick.sol:
+- Keep Solidity 0.8.24, evm_version cancun, OpenZeppelin v5
+- Custom errors + NatSpec on all public/external functions
+- Update test/AvaxQuick.t.sol: unit + fuzz + invariant coverage
+- Run forge build && forge test -vvv
+- If ABI changes: cd frontend && npm run sync-abi
+Follow .cursorrules and CLAUDE.md.
+```
+
+### Add a frontend feature
+
+```
+In frontend/, add [FEATURE] to the AvaxQuick dashboard:
+- Read frontend/AGENTS.md first
+- Use wagmi hooks, viem types, RainbowKit — no ethers.js
+- Fuji testnet only unless I specify mainnet
+- Contract address from src/config/contracts.ts (env var)
+- After any contract ABI change: npm run sync-abi
+- Match existing dark Tailwind styling in TokenDashboard.tsx
+```
+
+### Full Fuji deploy + frontend connect
+
+```
+Walk me through deploying AvaxQuick to Fuji and connecting the frontend:
+1. Verify foundry.toml has evm_version = cancun
+2. forge test -vvv && forge coverage
+3. Dry-run then broadcast script/Deploy.s.sol on Fuji
+4. Set NEXT_PUBLIC_AVAX_QUICK_ADDRESS in frontend/.env.local
+5. npm run sync-abi && npm run dev
+Follow HOW_TO.md. Never commit .env or .env.local.
+```
+
+### Audit this repo
+
+```
+Security audit of the AvaxQuick repo:
+- src/AvaxQuick.sol: access control, supply cap, votes/permit overrides
+- script/Deploy.s.sol: key handling via vm.envUint only
+- frontend/: no leaked secrets, input validation before contract calls
+- foundry.toml: evm_version cancun
+Run slither . --print human-summary and summarize HIGH/MEDIUM findings.
+```
 
 ---
 
