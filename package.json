@@ -1,0 +1,8 @@
+{
+  "name": "avax-quickstart",
+  "private": true,
+  "scripts": {
+    "deploy:fuji": "node scripts/deploy-fuji.mjs",
+    "update-address": "node scripts/update-frontend-address.mjs"
+  }
+}

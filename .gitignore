@@ -19,3 +19,8 @@ Thumbs.db
 # Coverage
 lcov.info
 coverage-summary.txt
+
+# Next.js frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
